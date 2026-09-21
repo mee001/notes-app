@@ -5,6 +5,16 @@ services:
       - "8080:80"
     volumes:
       - website-data:/usr/share/nginx/html
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:6
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
 
 volumes:
   website-data:
+  mongo-data:

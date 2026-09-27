@@ -1,0 +1,26 @@
+services:
+  notes-app:
+    build: .
+    ports:
+            - "8080:80"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: always
+
+  mongo:
+    image: mongo:6
+    volumes:
+            - mongo-data:/data/db
+    env_file:
+            - .env
+    ports:
+            - "127.0.0.1:27017:27017"
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      retries: 5
+    restart: always
+
+volumes:
+  mongo-data:

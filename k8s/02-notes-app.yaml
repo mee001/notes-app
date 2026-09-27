@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notes-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: notes-app
+  template:
+    metadata:
+      labels:
+        app: notes-app
+    spec:
+      containers:
+            - name: notes-app
+        image: mee001/notes-app:latest
+        ports:
+                - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notes-app-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: notes-app
+  ports:
+    - port: 80
+    targetPort: 80
